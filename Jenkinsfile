@@ -40,10 +40,10 @@ node {
 }
 
 def createRBDN (sourceArtifactoryId, distribution_url) {
-   def aqlDockerString = 'items.find({"repo":"docker-prod-local","path":{"$match":"*docker-app/latest*"}})'
-    println "aqlDocker" + aqlDockerString
-   def aqlUbuntuString = 'items.find({"repo":"docker-remote-cache","path":{"$match":"*ubuntu/latest*"}})'
-    println "aqlUbu" + aqlUbuntuString
+   def aqlDockerString = 'items.find({\\"repo\\":\\"docker-prod-local\\",\\"path\\":{\\"$matc\\h":\\"*docker-app/latest*\\"}})'
+  
+   def aqlUbuntuString = 'items.find({\\"repo\\":\\"docker-remote-cache\\",\\"path\\":{\\"$match\\":\\"*ubuntu/latest*\\"}})'
+  
    def releaseBundle = """ {
       "name":"sol1",
       "version": "1.0",
@@ -61,8 +61,6 @@ def createRBDN (sourceArtifactoryId, distribution_url) {
             ]
       }
    }"""
-  
-   println(releaseBundle)
   
    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: CREDENTIALS, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
        def rbdnRequest = ["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", "${releaseBundle}", "-u", "$USERNAME:$PASSWORD", "${distribution_url}release_bundle"]
