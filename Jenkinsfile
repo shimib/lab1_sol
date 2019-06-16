@@ -69,7 +69,7 @@ def createRBDN (sourceArtifactoryId, distribution_url) {
           def rbdnResponse = rbdnRequest.execute().text
           println "Release Bundle Response is: " + rbdnResponse
        } catch (Exception e) {
-          println "Caught exception finding lastest docker-app helm chart. Message ${e.message}"
+          println "Caught exception. Message ${e.message}"
           throw e
        }
     }
