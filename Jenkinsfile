@@ -26,7 +26,7 @@ node {
     
     stage ('Sign Release Bundle') {
         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: CREDENTIALS, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-           def rbdnRequest = ["curl", "-X", "POST", "-H", "Content-Type: application/json", "-u", "$USERNAME:$PASSWORD", "${distribution_url}release_bundle/sol1/1.0/sign"]
+           def rbdnRequest = ["curl", "-X", "POST", "-H", "Content-Type: application/json", "-u", "$USERNAME:$PASSWORD", "${distribution_url}release_bundle/sol1/1.1/sign"]
     
            try {
               def rbdnResponse = rbdnRequest.execute().text
@@ -37,6 +37,33 @@ node {
            }
         }
     }
+    
+    stage ('Distribute') {
+        
+     def distributePayload = """ {
+      "dry_run":"false",
+      "distribution_rules": [
+        {
+            "service_name": "edge*"
+        }
+      ]
+      }"""
+
+   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: CREDENTIALS, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+       def rbdnRequest = ["curl", "-X", "POST", "-H", "Content-Type:application/json", "-d", "${distributePayload}", "-u", "$USERNAME:$PASSWORD", "${distribution_url}distribution/sol1/1.1"]
+
+       try {
+          def rbdnResponse = rbdnRequest.execute().text
+          println "Distribution Response is: " + rbdnResponse
+       } catch (Exception e) {
+          println "Caught exception when requesting distribution. Message ${e.message}"
+          throw e
+       }
+   }   
+        
+    }    
+        
+        
 }
 
 def createRBDN (sourceArtifactoryId, distribution_url) {
@@ -46,7 +73,7 @@ def createRBDN (sourceArtifactoryId, distribution_url) {
   
    def releaseBundle = """ {
       "name":"sol1",
-      "version": "1.0",
+      "version": "1.1",
       "description":"solution1",
       "dry_run":"false",
       "spec": {
