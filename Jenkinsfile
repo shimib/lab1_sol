@@ -40,7 +40,7 @@ node {
 }
 
 def createRBDN (sourceArtifactoryId, distribution_url) {
-   def aqlDockerString = 'items.find({\\"repo\\":\\"docker-prod-local\\",\\"path\\":{\\"$matc\\h":\\"*docker-app/latest*\\"}})'
+   def aqlDockerString = 'items.find({\\"repo\\":\\"docker-prod-local\\",\\"path\\":{\\"$match\\":\\"*docker-app/latest*\\"}})'
   
    def aqlUbuntuString = 'items.find({\\"repo\\":\\"docker-remote-cache\\",\\"path\\":{\\"$match\\":\\"*ubuntu/latest*\\"}})'
   
