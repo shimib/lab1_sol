@@ -41,7 +41,9 @@ node {
 
 def createRBDN (sourceArtifactoryId, distribution_url) {
    def aqlDockerString = 'items.find({"repo":"docker-prod-local","path":{"$match":"*docker-app/latest*"}})'
+    println "aqlDocker" + aqlDockerString
    def aqlUbuntuString = 'items.find({"repo":"docker-remote-cache","path":{"$match":"*ubuntu/latest*"}})'
+    println "aqlUbu" + aqlUbuntuString
    def releaseBundle = """ {
       "name":"sol1",
       "version": "1.0",
