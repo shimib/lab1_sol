@@ -61,7 +61,7 @@ def createRBDN (sourceArtifactoryId, distribution_url) {
             ]
       }
    }"""
-  
+   println releaseBundle
    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: CREDENTIALS, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
        def rbdnRequest = ["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", "${releaseBundle}", "-u", "$USERNAME:$PASSWORD", "${distribution_url}release_bundle"]
 
